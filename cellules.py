@@ -7,16 +7,19 @@ class Grille:
     def __init__(self, larg, haut):
         self.largeur = larg
         self.hauteur = haut
+        self.matrix = []
+        for i in range(haut):
+            ligne = []
+            for j in range(larg):
+                ligne.append(Cellule())
+            self.matrix.append(ligne)
 
     def dans_grille(self, pixel):
-        if self.matrix[pixel[0][pixel[1]]] in self.matrix:
-            return True
-        else:
-            return False
-    def setXY(self, boole, pixel):
-        self.matrix[pixel[0][pixel[1]]] = boole
-    def getXY(self, pixel):
-        return self.matrix[pixel[0][pixel[1]]]
+        return 0 <= pixel[0] < self.largeur and 0 <= pixel[1] < self.hauteur
+    def setXY(self, i, j, new):
+        self.matrix[j][i].actuel = new
+    def getXY(self, i, j):
+        return self.matrix[j][i]
 
     def get_largeur(self):
         return self.largeur
@@ -24,53 +27,58 @@ class Grille:
     def get_hauteur(self):
         return self.hauteur
 
-    def est_voisin(self, pixel1, pixel2):
-        if abs(pixel1[0]-pixel2[0]) < 1 and abs(pixel1[1]-pixel2[1]):
-            return True
-        else:
-            return False
+    def est_voisin(self, i, j, x, y):
+        return abs(i - x) <= 1 and abs(j - y) <= 1
 
-    def get_voisins(self, pixel):
-        return self.matrix[pixel[0][pixel[1]]].get_voisins
+    def get_voisins(self, i, j):
+        voisins = []
+        for x in range(i - 1, i + 2):
+            for y in range(j - 1, j + 2):
+                if (x, y) != (i, j) and self.dans_grille((x, y)):
+                    voisins.append(self.getXY(x, y))
+        return voisins
 
     def affecte_voisins(self):
-        for i in self.matrix:
-            for j in self.matrix:
-                self.matrix[i[j]].set_voisins(self.get_voisins((i, j)))
+        for i in range(self.largeur):
+            for j in range(self.hauteur):
+                self.matrix[j][i].set_voisins(self.get_voisins(i, j))
 
     def __str__(self):
         ret = ""
         for i in self.matrix:
             ret += "\n"
             for j in self.matrix:
-                ret += self.matrix[i[j]].__str__()
+                ret += str(j)
         return ret
 
     def remplir_alea(self, taux):
         for i in range(self.largeur):
             for j in range(self.hauteur):
-                if randint
-                self.matrix[j[i]] ==  Cellule
+                if randint(1, 100) <= taux:
+                    self.matrix[j][i].actuel = True
+                else:
+                    self.matrix[j][i].actuel = False
 
-                self.matrix[j[i]].naitre
+    def jeu(self):
+        for i in range(self.largeur):
+            for j in range(self.hauteur):
+                cellule = self.matrix[j][i]
+                cellule.calcul_etat_futur()
 
-
-        return True
-
-
-
-
-
-
-
-
-
+    def actualise(self):
+        for i in range(self.largeur):
+            for j in range(self.hauteur):
+                cellule = self.matrix[j][i]
+                cellule.basculer()
 
 class Cellule:
     actuel = False
     futur = False
     voisins = []
-
+    def __init__(self):
+        self.actuel = False
+        self.futur = False
+        self.voisins = None
     def est_vivant(self):
         return self.actuel
 
@@ -94,20 +102,18 @@ class Cellule:
 
         :return: "X" (str) ou "-" (str)
         """
-        if self.est_vivant()==True:
+        if self.est_vivant():
             return "X"
-        elif self.est_vivant()==False:
+        else:
             return "-" # Tiret du 6
 
     def calcul_etat_futur(self):
-        if self.actuel == True:
-            if len(self.voisins) <= 2:
+        if self.actuel:
+            if len(self.voisins) < 2 or len(self.voisins) > 3:
                 self.futur = False
-            elif 2 < len(self.voisins) < 4:
+            else:
                 self.futur = True
-            elif len(self.voisins) > 4:
-                self.futur = False
-        elif self.actuel == False:
+        else:
             if len(self.voisins) == 3:
                 self.futur == True
             else:
