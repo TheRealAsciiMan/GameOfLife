@@ -14,8 +14,8 @@ class Grille:
                 ligne.append(Cellule())
             self.matrix.append(ligne)
 
-    def dans_grille(self, pixel):
-        return 0 <= pixel[0] < self.largeur and 0 <= pixel[1] < self.hauteur
+    def dans_grille(self, i, j):
+        return 0 <= i <= self.largeur and 0 <= j <= self.hauteur
     def setXY(self, i, j, new):
         self.matrix[j][i].actuel = new
     def getXY(self, i, j):
@@ -62,14 +62,12 @@ class Grille:
     def jeu(self):
         for i in range(self.largeur):
             for j in range(self.hauteur):
-                cellule = self.matrix[j][i]
-                cellule.calcul_etat_futur()
+                self.matrix[j][i].calcul_etat_futur()
 
     def actualise(self):
         for i in range(self.largeur):
             for j in range(self.hauteur):
-                cellule = self.matrix[j][i]
-                cellule.basculer()
+                self.matrix[j][i].basculer()
 
 class Cellule:
     actuel = False
