@@ -106,15 +106,16 @@ class Cellule:
             return "-" # Tiret du 6
 
     def calcul_etat_futur(self):
-        if self.actuel:
-            if len(self.voisins) < 2 or len(self.voisins) > 3:
-                self.futur = False
+        if self.voisins is not None:
+            if self.actuel:
+                if len(self.voisins) < 2 or len(self.voisins) > 3:
+                    self.futur = False
+                else:
+                    self.futur = True
             else:
-                self.futur = True
-        else:
-            if len(self.voisins) == 3:
-                self.futur == True
-            else:
-                self.futur == False
+                if len(self.voisins) == 3:
+                    self.futur == True
+                else:
+                    self.futur == False
 
 
