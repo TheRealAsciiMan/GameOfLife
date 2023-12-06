@@ -1,12 +1,21 @@
 from cellules import *
+from time import sleep
+
+
 def effacer_ecran():
     print("\u001B[H\u001B[J")
 
 
-jeuDeLaVie = Grille(50,50)
-jeuDeLaVie.remplir_alea(75)
+jeuDeLaVie = Grille(100,10)
+jeuDeLaVie.remplir_alea(45)
+jeuDeLaVie.actualise()
+print(jeuDeLaVie)
+
+
+
 while True:
     jeuDeLaVie.jeu()
     jeuDeLaVie.actualise()
-    jeuDeLaVie.__str__()
+    sleep(1)
+    print(jeuDeLaVie)
     effacer_ecran()
