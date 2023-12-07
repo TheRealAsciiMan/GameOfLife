@@ -6,16 +6,13 @@ def effacer_ecran():
     print("\u001B[H\u001B[J")
 
 
-jeuDeLaVie = Grille(100,10)
+jeuDeLaVie = Grille(30,5)
 jeuDeLaVie.remplir_alea(45)
 jeuDeLaVie.actualise()
-print(jeuDeLaVie)
-
-
-
 while True:
+    jeuDeLaVie.affecte_voisins()
     jeuDeLaVie.jeu()
     jeuDeLaVie.actualise()
-    sleep(1)
     print(jeuDeLaVie)
+    sleep(0.5)
     effacer_ecran()

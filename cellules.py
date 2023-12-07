@@ -1,25 +1,27 @@
 from random import randint
 
+#i largeur
+#j hauteur
 
 class Grille:
     def __init__(self, larg, haut):
         self.largeur = larg
         self.hauteur = haut
         self.matrix = []
-        for i in range(haut):
+        for h in range(haut):
             ligne = []
-            for j in range(larg):
+            for l in range(larg):
                 ligne.append(Cellule())
             self.matrix.append(ligne)
 
-    def dans_grille(self, i, j):
-        return 0 <= i <= self.largeur and 0 <= j <= self.hauteur
+    def dans_grille(self, l, h):
+        return 0 <= l <= self.largeur and 0 <= h <= self.hauteur
 
-    def setXY(self, i, j, new):
-        self.matrix[j][i].actuel = new
+    def setXY(self, l, h, new):
+        self.matrix[h][l].actuel = new
 
-    def getXY(self, i, j):
-        return self.matrix[j][i]
+    def getXY(self, l, h):
+        return self.matrix[h][l]
 
     def get_largeur(self):
         return self.largeur
@@ -28,48 +30,48 @@ class Grille:
         return self.hauteur
 
     @staticmethod
-    def est_voisin(i, j, x, y):
-        if (i, j) != (x, y):
-            return abs(i - x) <= 1 and abs(j - y) <= 1
+    def est_voisin(l, h, x, y):
+        if (l, h) != (x, y):
+            return abs(l - x) <= 1 and abs(h - y) <= 1
 
-    def get_voisins(self, i, j):
-        voisins = []
-        for x in range(i - 1, i + 2):
-            for y in range(j - 1, j + 2):
-                if (x, y) != (i, j) and self.dans_grille(x, y) and self.est_voisin(i, j, x, y):
+    def get_voisins(self, l, h):
+        voisins = []  #liste de Cellules
+        for x in range(self.largeur):
+            for y in range(self.hauteur):
+                if self.dans_grille(x, y) and self.est_voisin(l, h, x, y):
                     voisins.append(self.getXY(x, y))
         return voisins
 
     def affecte_voisins(self):
-        for i in range(self.largeur):
-            for j in range(self.hauteur):
-                self.matrix[j][i].set_voisins(self.get_voisins(i, j))
+        for l in range(self.largeur):
+            for h in range(self.hauteur):
+                self.matrix[h][l].set_voisins(self.get_voisins(l, h))
 
     def __str__(self):
         ret = ""
-        for i in self.matrix:
+        for h in self.matrix:
             ret += "\n"
-            for j in i:
-                ret += j.__str__()
+            for l in h:
+                ret += l.__str__()
         return ret
 
     def remplir_alea(self, taux):
-        for i in range(self.largeur):
-            for j in range(self.hauteur):
+        for l in range(self.largeur):
+            for h in range(self.hauteur):
                 if randint(1, 100) <= taux:
-                    self.matrix[j][i].naitre()
+                    self.matrix[h][l].naitre()
                 else:
-                    self.matrix[j][i].mourir()
+                    self.matrix[h][l].mourir()
 
     def jeu(self):
-        for i in range(self.largeur):
-            for j in range(self.hauteur):
-                self.matrix[j][i].calcul_etat_futur()
+        for l in range(self.largeur):
+            for h in range(self.hauteur):
+                self.matrix[h][l].calcul_etat_futur()
 
     def actualise(self):
-        for i in range(self.largeur):
-            for j in range(self.hauteur):
-                self.matrix[j][i].basculer()
+        for l in range(self.largeur):
+            for h in range(self.hauteur):
+                self.matrix[h][l].basculer()
 
 
 class Cellule:
@@ -108,13 +110,21 @@ class Cellule:
             return "-"   # Tiret du 6
 
     def calcul_etat_futur(self):
-        if self.actuel:
-            if len(self.voisins) < 2 or len(self.voisins) > 3:
-                self.futur = False
+        if self.est_vivant():
+            cellules_vivantes = 0
+            for v in self.voisins:
+                if v.est_vivant():
+                    cellules_vivantes += 1
+            if cellules_vivantes == 2 or cellules_vivantes == 3:
+                self.naitre()
             else:
-                self.futur = True
+                self.mourir()
         else:
-            if len(self.voisins) == 3:
-                self.futur = True
+            cellules_vivantes = 0
+            for v in self.voisins:
+                if v.est_vivant():
+                    cellules_vivantes += 1
+            if cellules_vivantes == 3:
+                self.naitre()
             else:
-                self.futur = False
+                self.mourir()
