@@ -1,6 +1,8 @@
 from cellules import *
 import os
 from time import sleep
+
+
 def effacer_ecran():
     """
     Efface l'écran de la console.
@@ -9,6 +11,7 @@ def effacer_ecran():
     """
     os.system('cls' if os.name == 'nt' else 'clear')
 
+
 def infini():
     """
     Exécute le Jeu de la Vie de manière infinie.
@@ -16,7 +19,7 @@ def infini():
     Crée une grille de jeu, la remplit aléatoirement en fonction du taux de remplissage,
     puis met à jour et affiche la grille de manière continue dans une boucle infinie.
     """
-    jeuDeLaVie = Grille(largeur,hauteur)
+    jeuDeLaVie = Grille(largeur, hauteur)
     jeuDeLaVie.remplir_alea(remplissage)
     jeuDeLaVie.actualise()
     while True:
@@ -25,6 +28,7 @@ def infini():
         jeuDeLaVie.actualise()
         effacer_ecran()
         print(jeuDeLaVie)
+
 
 def limite(lim):
     """
@@ -48,7 +52,6 @@ def limite(lim):
         if i == lim-1:
             print("\nFin du Jeu la Vie, extinction du programme dans 10 secondes !\nMerci d'avoir utlisé notre programme !")
             sleep(10)
-
 
 
 print("\n\nBienvenue sur le Jeu de la Vie en Python")
@@ -95,4 +98,3 @@ except ValueError:
     print("Lancement !")
     sleep(1)
     limite(tours)
-

@@ -1,7 +1,5 @@
 from random import randint
 
-#i largeur
-#j hauteur
 
 class Grille:
     """
@@ -46,7 +44,7 @@ class Grille:
                 ligne.append(Cellule())
             self.matrix.append(ligne)
 
-    def dans_grille(self, l:int, h:int)->bool:
+    def dans_grille(self, l:int, h:int) -> bool:
         """
         Vérifie si les coordonnées (l, h) sont à l'intérieur de la grille.
 
@@ -89,7 +87,7 @@ class Grille:
         """
         return self.matrix[h][l]
 
-    def get_largeur(self)->int:
+    def get_largeur(self) -> int:
         """
         Récupère la largeur de la grille.
 
@@ -100,7 +98,7 @@ class Grille:
         """
         return self.largeur
 
-    def get_hauteur(self)->int:
+    def get_hauteur(self) -> int:
         """
         Récupère la hauteur de la grille.
 
@@ -112,7 +110,7 @@ class Grille:
         return self.hauteur
 
     @staticmethod
-    def est_voisin(l:int, h:int, x:int, y:int)->bool:
+    def est_voisin(l:int, h:int, x:int, y:int) -> bool:
         """
         Méthode Statique
 
@@ -132,7 +130,7 @@ class Grille:
         if (l, h) != (x, y):
             return abs(l - x) <= 1 and abs(h - y) <= 1
 
-    def get_voisins(self, l:int, h:int)->list:
+    def get_voisins(self, l:int, h:int) -> list:
         """
         Récupère la liste des cellules voisines de la cellule aux coordonnées (l, h).
 
@@ -163,7 +161,7 @@ class Grille:
             for h in range(self.hauteur):
                 self.matrix[h][l].set_voisins(self.get_voisins(l, h))
 
-    def __str__(self)->str:
+    def __str__(self) -> str:
         """
         Convertit la grille en une chaîne de caractères pour l'affichage.
 
@@ -246,7 +244,7 @@ class Cellule:
         self.futur = False
         self.voisins = []
 
-    def est_vivant(self)->bool:
+    def est_vivant(self) -> bool:
         """
         Vérifie si la cellule est vivante.
 
@@ -268,7 +266,7 @@ class Cellule:
         """
         self.voisins = voisins
 
-    def get_voisins(self)->list:
+    def get_voisins(self) -> list:
         """
         Récupère la liste des cellules voisines de la cellule.
 
@@ -303,7 +301,7 @@ class Cellule:
         """
         self.actuel = self.futur
 
-    def __str__(self)->str:
+    def __str__(self) -> str:
         """
         Convertit la cellule en une chaîne de caractères pour l'affichage.
 
